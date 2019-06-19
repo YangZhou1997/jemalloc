@@ -79,6 +79,10 @@ os_pages_map(void *addr, size_t size, size_t alignment, bool *commit) {
 		ret = mmap(addr, size, prot, mmap_flags, -1, 0);
 	}
 	assert(ret != NULL);
+	if(ret != MAP_FAILED)
+	{
+		malloc_printf("[Tracing] mmap: %lu\n", size);
+	}
 
 	if (ret == MAP_FAILED) {
 		ret = NULL;
@@ -92,7 +96,6 @@ os_pages_map(void *addr, size_t size, size_t alignment, bool *commit) {
 #endif
 	assert(ret == NULL || (addr == NULL && ret != addr) || (addr != NULL &&
 	    ret == addr));
-	malloc_printf("[Tracing] mmap: %lu\n", size);
 	return ret;
 }
 
@@ -149,6 +152,9 @@ os_pages_unmap(void *addr, size_t size) {
 		if (opt_abort) {
 			abort();
 		}
+	}
+	else{
+		malloc_printf("[Tracing] munmap: %lu\n", size);
 	}
 }
 
@@ -267,8 +273,13 @@ pages_commit_impl(void *addr, size_t size, bool commit) {
 		int prot = commit ? PAGES_PROT_COMMIT : PAGES_PROT_DECOMMIT;
 		void *result = mmap(addr, size, prot, mmap_flags | MAP_FIXED,
 		    -1, 0);
+
 		if (result == MAP_FAILED) {
 			return true;
+		}
+		else
+		{
+			malloc_printf("[Tracing] mmap: %lu\n", size);
 		}
 		if (result != addr) {
 			/*
@@ -278,7 +289,6 @@ pages_commit_impl(void *addr, size_t size, bool commit) {
 			os_pages_unmap(result, size);
 			return true;
 		}
-		malloc_printf("[Tracing] mmap: %lu\n", size);
 		return false;
 	}
 #endif
