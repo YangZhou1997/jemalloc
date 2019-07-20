@@ -181,7 +181,7 @@ extent_alloc_dss(tsdn_t *tsdn, arena_t *arena, void *new_addr, size_t size,
 			/* Try to allocate. */
 			void *dss_prev = extent_dss_sbrk(incr);
 			if (dss_prev == max_cur) {
-				malloc_printf("[Tracing] sbrk: %lf KB\n", incr / 1024.0);
+				malloc_printf("[Tracing] sbrk: %lu\n", incr);
 				/* Success. */
 				atomic_store_p(&dss_max, dss_next,
 				    ATOMIC_RELEASE);
