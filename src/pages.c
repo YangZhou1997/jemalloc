@@ -81,7 +81,7 @@ os_pages_map(void *addr, size_t size, size_t alignment, bool *commit) {
 	assert(ret != NULL);
 	if(ret != MAP_FAILED)
 	{
-		malloc_printf("[Tracing] mmap: %lu\n", size);
+		malloc_printf("[Tracing] mmap: %lf KB\n", size/1024.0);
 	}
 
 	if (ret == MAP_FAILED) {
@@ -154,7 +154,7 @@ os_pages_unmap(void *addr, size_t size) {
 		}
 	}
 	else{
-		malloc_printf("[Tracing] munmap: %lu\n", size);
+		malloc_printf("[Tracing] munmap: %lf KB\n", size/1024.0);
 	}
 }
 
@@ -214,7 +214,7 @@ pages_map(void *addr, size_t size, size_t alignment, bool *commit) {
 		}
 		else
 		{
-			malloc_printf("[Tracing] mmap: %lu\n", size);
+			malloc_printf("[Tracing] mmap: %lf KB\n", size/1024.0);
 		}
 
 		return ret;
@@ -279,7 +279,7 @@ pages_commit_impl(void *addr, size_t size, bool commit) {
 		}
 		else
 		{
-			malloc_printf("[Tracing] mmap: %lu\n", size);
+			malloc_printf("[Tracing] mmap: %lf KB\n", size/1024.0);
 		}
 		if (result != addr) {
 			/*
